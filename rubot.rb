@@ -26,8 +26,8 @@ deploy!
 # Read the file of existing links so we don't have to re-add everything all the time
 $links = JSON.parse(File.read('rubot-links'))
 
-token, app_id = File.read('rubot-auth')
-bot = Discordrb::Bot.new token: token, application_id: app_id
+token, app_id = File.read('rubot-auth').lines
+bot = Discordrb::Bot.new token: token, application_id: app_id.to_i
 puts bot.invite_url
 
 bot.message(starting_with: 'rubot, link this:') do |event|
