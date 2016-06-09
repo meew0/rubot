@@ -27,5 +27,9 @@ Show commit related messages.
 Show issue related messages.
 ### showprs
 Show pull request related messages.
-###showcomments
+### showcomments
 Show comments.
+### showstars
+Show when repo gets a star.
+### showforks
+Show when repo gets forked.
