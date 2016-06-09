@@ -3,5 +3,7 @@
     "showcommits":true,
     "showissues":true,
     "showprs":true,
-    "showcomments":true
+    "showcomments":true,
+    "showstars":true,
+    "showforks":true
 }
