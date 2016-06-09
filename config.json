@@ -2,5 +2,6 @@
     "showclosed":true,
     "showcommits":true,
     "showissues":true,
-    "showprs":true
+    "showprs":true,
+    "showcomments":true
 }
