@@ -26,6 +26,9 @@ deploy!
 # Read the file of existing links so we don't have to re-add everything all the time
 $links = JSON.parse(File.read('rubot-links'))
 
+# Reads config
+$config = JSON.parse(File.read('config.json'))
+
 token, app_id = File.read('rubot-auth').lines
 bot = Discordrb::Bot.new token: token, application_id: app_id.to_i
 puts bot.invite_url
@@ -110,6 +113,41 @@ def handle(event_type, payload)
   end
 end
 
+# This isn't as perfect but gets whatever done.
+def check_config(event_type, payload)
+  event_type = event_type.delete('_')
+  payload = WSPayload.new(payload)
+  if $config["showclosed"]
+    case payload.action
+    when "closed"
+      return false
+    when "unlabeled"
+      return false 
+    when "unassigned"
+      return false
+    end
+  end
+  if not $config["showprs"] and event_type = "pull_request"
+    return false
+  end
+  if not $config["showcomments"] and event_type = "issue_comment"
+    return false
+  end
+  if not $config["showcommits"] and event_type = "push"
+    return false
+  end
+  if not $config["showissues"] and event_type = "issues"
+    return false
+  end
+  if not $config["showstars"] and event_type = "watch"
+    return false
+  end
+  if not $config["showforks"] and event_type = "fork"
+    return false
+  end
+  return true
+end
+
 get '/webhook' do
   "Hooray! The bot works. #{$links.length} links are currently registered."
 end
@@ -123,10 +161,12 @@ post '/webhook' do
   channels = $links[repo_name]
   channels.each do |e|
     response = handle(event_type, payload)
-    if response
-      bot.send_message(e, "**#{repo_name}**: **#{payload['sender']['login']}** " + response)
-    else
-      puts %(Got a "#{event_type}" event for repo #{repo_name} that is not supported - ignoring)
+    if check_config(event_type, payload(
+      if response
+        bot.send_message(e, "**#{repo_name}**: **#{payload['sender']['login']}** " + response)
+      else
+        puts %(Got a "#{event_type}" event for repo #{repo_name} that is not supported - ignoring)
+      end
     end
   end
 
