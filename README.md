@@ -18,6 +18,7 @@ Then, use `ruby rubot.rb` to run it.
 Make sure the sinatra server is open to the public (try opening "http://<server IP>:4567/webhook" in a browser). Once you verified that it is, add a GitHub webhook for that URL to your repo (scope should be everything) and run `rubot, link this: <user>/<repo>` in the channel you want to link the repo to. Try it out by opening a test issue.
 
 ## Settings
+These settings can be configured in `config.json`
 ### showclosed
 Show Closed PRs and issues and also show removing such things as labels.
 ### showcommits
@@ -26,3 +27,5 @@ Show commit related messages.
 Show issue related messages.
 ### showprs
 Show pull request related messages.
+###showcomments
+Show comments.
