@@ -127,23 +127,17 @@ def check_config(event_type, payload)
       return false
     end
   end
-  if not $config["showprs"] and event_type = "pull_request"
-    return false
-  end
-  if not $config["showcomments"] and event_type = "issue_comment"
-    return false
-  end
-  if not $config["showcommits"] and event_type = "push"
-    return false
-  end
-  if not $config["showissues"] and event_type = "issues"
-    return false
-  end
-  if not $config["showstars"] and event_type = "watch"
-    return false
-  end
-  if not $config["showforks"] and event_type = "fork"
-    return false
+  {
+    "showprs" => "pull_request",
+    "showcomments" => "issue_comment",
+    "showcommits" => "push",
+    "showissues" => "issues",
+    "showstars" => "watch",
+    "showforks" => "fork"
+  }.each do |config_type, event_name|
+    if not $config[config_type] and event_type = event_name
+      return false
+    end
   end
   return true
 end
