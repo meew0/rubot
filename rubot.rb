@@ -161,7 +161,7 @@ post '/webhook' do
   channels = $links[repo_name]
   channels.each do |e|
     response = handle(event_type, payload)
-    if check_config(event_type, payload(
+    if check_config(event_type, payload)
       if response
         bot.send_message(e, "**#{repo_name}**: **#{payload['sender']['login']}** " + response)
       else
