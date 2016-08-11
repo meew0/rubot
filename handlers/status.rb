@@ -37,6 +37,22 @@ module RubotHandlers::Status
     def enabled?(repo)
       @enabled_repos.include? repo
     end
+
+    def chance_list(id)
+      unless @chances[id]
+        @chances[id] = [0, 0]
+        return [0, 0, 0]
+      end
+
+      list = @chances[id]
+      if list[0] == list[1] == 0
+        list << 0
+      else
+        list << (list[0].to_f / (list[0] + list[1]))
+      end
+
+      list
+    end
   end
 
   def self.handle(payload)
