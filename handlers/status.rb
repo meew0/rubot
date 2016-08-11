@@ -110,14 +110,16 @@ module RubotHandlers::Status
       BetsFile.instance.update_chance(payload.sender_id, state)
 
       str = "The build for commit **#{payload.commit_sha}** has **#{participle}**!
-Chances for committer #{payload.sender_name} have been updated to #{format_chance_list(BetsFile.instance.chance_list(payload.sender_id))}."
+Chances for committer #{payload.sender_name} have been updated to #{format_chance_list(BetsFile.instance.chance_list(payload.sender_id))}.
+"
 
       @current_bet.each do |better|
         # [id, name, amount, state_num]
         delta = better[2] * @payouts[better[3]]
 
         BetsFile.instance.update_balance(better[0], delta)
-        str += "**#{better[1]}** has #{delta >= 0 ? 'won' : 'lost'} **#{delta.abs} #{GEM}**."
+        str += "**#{better[1]}** has #{delta >= 0 ? 'won' : 'lost'} **#{delta.abs} #{GEM}**.
+"
       end
 
       @current_bet = nil
