@@ -71,6 +71,11 @@ module RubotHandlers::Status
       @balances[id] += delta
       @balances[id]
     end
+
+    def balance_of(id)
+      id = id.to_s
+      @balances[id]
+    end
   end
 
   PARTICIPLES = {

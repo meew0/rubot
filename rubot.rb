@@ -58,6 +58,27 @@ Now this is not 100% correct, as the command evaluates Ruby code, not Groovy, an
   end
 end
 
+bot.message(starting_with: 'rubot, bet') do |event|
+  if /rubot, bet (?<amount>\d+) ?(💎)? on (?<state>success|failure)/ =~ mention
+    amount = amount.to_i
+
+    bets_file = RubotHandlers::Status::BetsFile.instance
+    if bets_file.balance_of(event.author.id) > amount
+      bets_file.update_balance(event.author.id, -balance)
+      bets_file.write
+
+      state_num = RubotHandlers::Status::STATE_NUMS[state.to_i]
+
+      RubotHandlers::Status.bet(event.author.id, event.author.username, amount, state_num)
+      event.respond "**#{event.author.username}** has bet **#{amount} #{RubotHandlers::Status::GEM}** on **#{state}** (`#{state_num}`)."
+    else
+      event.respond "Not enough money, you only have **#{bets_file.balance_of(event.author.id)} #{RubotHandlers::Status::GEM}**."
+    end
+  else
+    event.respond 'Invalid format! `rubot, bet 10 on failure`'
+  end
+end
+
 bot.run :async
 
 class WSPayload
