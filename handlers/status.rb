@@ -102,7 +102,7 @@ module RubotHandlers::Status
       participle = PARTICIPLES[payload.state]
       state = STATE_NUMS[payload.state]
 
-      new_chances = BetsFile.update_chance(payload.sender_id, state)
+      new_chances = BetsFile.instance.update_chance(payload.sender_id, state)
 
       str = "The build for commit **#{payload.commit_sha}** has **#{participle}**!
 Chances for committer #{payload.sender_name} have been updated to #{format_chance_list(new_chances)}."
@@ -111,12 +111,12 @@ Chances for committer #{payload.sender_name} have been updated to #{format_chanc
         # [id, name, amount, state_num]
         delta = better[2] * @payouts[better[3]]
 
-        BetsFile.update_balance(better[0], delta)
+        BetsFile.instance.update_balance(better[0], delta)
         str += "**#{better[1]}** has #{delta >= 0 ? 'won' : 'lost'} **#{delta.abs} #{GEM}**."
       end
 
       @current_bet = nil
-      BetsFile.write
+      BetsFile.instance.write
       str
     else
       puts 'Note: conclude_bet called for commit not equal to current bet. Ignoring'
