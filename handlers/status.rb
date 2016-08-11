@@ -46,7 +46,7 @@ module RubotHandlers::Status
         return [0, 0, 0.5]
       end
 
-      list = @chances[id]
+      list = @chances[id].clone
       if list[0] == 0 && list[1] == 0
         list << 0.5
       else
