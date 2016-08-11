@@ -115,6 +115,13 @@ Chances for committer #{payload.sender_name} have been updated to #{format_chanc
     end
   end
 
+  def self.bet(id, name, amount, state_num)
+    return false unless @current_bet
+
+    @current_bet << [id, name, amount, state_num]
+    true
+  end
+
   def self.handle(payload)
     case payload.state
     when 'pending'
