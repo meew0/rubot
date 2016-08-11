@@ -139,7 +139,7 @@ Chances for committer #{payload.sender_name} have been updated to #{format_chanc
       else
         @bet_sha = payload.commit_sha
         @current_bet = []
-        @payouts = chance_list[0..1].map { |e| (1.0/e).round(2) }
+        @payouts = [chance_list[2], 1 - chance_list[2]].map { |e| (1.0/e).round(2) }
 
         chance_list = BetsFile.instance.chance_list(payload.sender_id)
         "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.sender_name}**! Bets for success or failure are on!
