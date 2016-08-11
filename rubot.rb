@@ -67,7 +67,7 @@ bot.message(starting_with: 'rubot, bet') do |event|
       bets_file.update_balance(event.author.id, -amount)
       bets_file.write
 
-      state_num = RubotHandlers::Status::STATE_NUMS[state.to_i]
+      state_num = RubotHandlers::Status::STATE_NUMS[state]
 
       RubotHandlers::Status.bet(event.author.id, event.author.username, amount, state_num)
       event.respond "**#{event.author.username}** has bet **#{amount} #{RubotHandlers::Status::GEM}** on **#{state}** (`#{state_num}`)."
