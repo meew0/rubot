@@ -108,6 +108,10 @@ class WSPayload
     @data['commit']['sha']
   end
 
+  def target_url
+    @data['target_url']
+  end
+
   def state
     @data['state']
   end
