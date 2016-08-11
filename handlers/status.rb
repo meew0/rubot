@@ -112,10 +112,10 @@ module RubotHandlers::Status
       participle = PARTICIPLES[payload.state]
       state = STATE_NUMS[payload.state]
 
-      BetsFile.instance.update_chance(payload.sender_id, state)
+      BetsFile.instance.update_chance(payload.author_id, state)
 
       str = "The build for commit **#{payload.commit_sha}** has **#{participle}**!
-Chances for committer #{payload.sender_name} have been updated to #{format_chance_list(BetsFile.instance.chance_list(payload.sender_id))}.
+Chances for committer #{payload.author_name} have been updated to #{format_chance_list(BetsFile.instance.chance_list(payload.author_id))}.
 "
 
       @current_bet.each do |better|
@@ -150,17 +150,17 @@ Chances for committer #{payload.sender_name} have been updated to #{format_chanc
     case payload.state
     when 'pending'
       if @current_bet
-        return "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.sender_name}**, however another bet is already active, so betting on this won't be possible. Sorry!" if payload.commit_sha != @bet_sha
+        return "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.author_name}**, however another bet is already active, so betting on this won't be possible. Sorry!" if payload.commit_sha != @bet_sha
         return nil
       else
         @bet_sha = payload.commit_sha
         @current_bet = []
 
-        chance_list = BetsFile.instance.chance_list(payload.sender_id)
+        chance_list = BetsFile.instance.chance_list(payload.author_id)
         @payouts = [chance_list[3], 1 - chance_list[3]].map { |e| (1.0/e).round(2) }
 
-        "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.sender_name}**! Bets for success or failure are on!
-**Statistics**: Committer **#{payload.sender_name}** (`#{payload.sender_id}`) has a build success chance of #{format_chance_list(chance_list)}.
+        "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.author_name}**! Bets for success or failure are on!
+**Statistics**: Committer **#{payload.author_name}** (`#{payload.author_id}`) has a build success chance of #{format_chance_list(chance_list)}.
 Payout for success is **#{@payouts[0]}x**, for failure **#{@payouts[1]}x**.
 Bet using the following format: `rubot, bet 10 on failure`"
       end
