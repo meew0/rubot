@@ -68,12 +68,15 @@ module RubotHandlers::Status
     def update_balance(id, delta)
       id = id.to_s
 
+      @balances[id] ||= 100
       @balances[id] += delta
       @balances[id]
     end
 
     def balance_of(id)
       id = id.to_s
+
+      @balances[id] ||= 100
       @balances[id]
     end
   end
