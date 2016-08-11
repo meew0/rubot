@@ -47,7 +47,7 @@ module RubotHandlers::Status
       end
 
       list = @chances[id]
-      if list[0] == list[1] == 0
+      if list[0] == 0 && list[1] == 0
         list << 0.5
       else
         list << (list[0].to_f / (list[0] + list[1]))
