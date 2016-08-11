@@ -120,6 +120,10 @@ class WSPayload
     @data['target_url']
   end
 
+  def context
+    @data['context']
+  end
+
   def state
     @data['state']
   end
