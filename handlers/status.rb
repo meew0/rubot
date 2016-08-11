@@ -98,6 +98,11 @@ module RubotHandlers::Status
   end
 
   def self.conclude_bet(payload)
+    unless @current_bet
+      puts 'current_bet is nil in conclude_bet, ignoring'
+      return nil
+    end
+
     if payload.commit_sha == @bet_sha
       participle = PARTICIPLES[payload.state]
       state = STATE_NUMS[payload.state]
