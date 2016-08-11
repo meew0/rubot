@@ -48,9 +48,14 @@ module RubotHandlers::Status
 
       list = @chances[id].clone
       if list[0] == 0 && list[1] == 0
-        list << 0.5
+        list << 0.5 # actual
+        list << 0.5 # for payout
       else
         list << (list[0].to_f / (list[0] + list[1]))
+
+        fake_abs_success = list[0] > 0 ? list[0] : 1
+        fake_abs_failure = list[1] > 0 ? list[1] : 1
+        list << (fake_abs_success.to_f / (fake_abs_success + fake_abs_failure))
       end
 
       list
@@ -94,7 +99,7 @@ module RubotHandlers::Status
   GEM = '💎'.freeze
 
   def self.format_chance_list(chance_list)
-    "**#{(chance_list.last * 100).round(2)} %** (#{chance_list[0]} succeeded, #{chance_list[1]} failed)"
+    "**#{(chance_list[2] * 100).round(2)} %** (#{chance_list[0]} succeeded, #{chance_list[1]} failed)"
   end
 
   def self.conclude_bet(payload)
@@ -149,7 +154,7 @@ Chances for committer #{payload.sender_name} have been updated to #{format_chanc
         @current_bet = []
 
         chance_list = BetsFile.instance.chance_list(payload.sender_id)
-        @payouts = [chance_list[2], 1 - chance_list[2]].map { |e| (1.0/e).round(2) }
+        @payouts = [chance_list[3], 1 - chance_list[3]].map { |e| (1.0/e).round(2) }
 
         "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.sender_name}**! Bets for success or failure are on!
 **Statistics**: Committer **#{payload.sender_name}** (`#{payload.sender_id}`) has a build success chance of #{format_chance_list(chance_list)}.
