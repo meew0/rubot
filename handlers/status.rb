@@ -43,7 +43,7 @@ module RubotHandlers::Status
 
       unless @chances[id]
         @chances[id] = [0, 0]
-        return [0, 0, 0.5]
+        return [0, 0, 0.5, 0.5]
       end
 
       list = @chances[id].clone
@@ -119,6 +119,9 @@ Chances for committer #{payload.sender_name} have been updated to #{format_chanc
 "
 
       @current_bet.each do |better|
+        # Don't process bets that have proven false
+        next unless better[3] == state
+
         # [id, name, amount, state_num]
         delta = better[2] * @payouts[better[3]]
 
