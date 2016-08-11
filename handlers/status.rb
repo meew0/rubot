@@ -107,10 +107,10 @@ module RubotHandlers::Status
       participle = PARTICIPLES[payload.state]
       state = STATE_NUMS[payload.state]
 
-      new_chances = BetsFile.instance.update_chance(payload.sender_id, state)
+      BetsFile.instance.update_chance(payload.sender_id, state)
 
       str = "The build for commit **#{payload.commit_sha}** has **#{participle}**!
-Chances for committer #{payload.sender_name} have been updated to #{format_chance_list(new_chances)}."
+Chances for committer #{payload.sender_name} have been updated to #{format_chance_list(BetsFile.instance.chance_list(payload.sender_id))}."
 
       @current_bet.each do |better|
         # [id, name, amount, state_num]
