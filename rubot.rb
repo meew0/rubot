@@ -108,6 +108,10 @@ class WSPayload
     @data['commit']['author']['login']
   end
 
+  def author_id
+    @data['commit']['author']['id']
+  end
+
   def commit_sha
     @data['commit']['sha']
   end
