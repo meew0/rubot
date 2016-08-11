@@ -58,6 +58,18 @@ module RubotHandlers::Status
   def self.handle(payload)
     case payload.state
     when 'pending'
+      if @current_bet
+        "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.sender_name}**, however another bet is already active, so betting on this won't be possible. Sorry!"
+      else
+        @bet_sha = payload.commit_sha
+        @current_bet = {}
+
+        chance_list = BetsFile.instance.chance_list(payload.sender_id)
+        "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.sender_name}**! Bets for success or failure are on!
+**Statistics**: Committer **#{payload.sender_name}** (`#{payload.sender_id}`) has a build success chance of **#{(chance_list.last * 100).round(2)} %** (#{chance_list[0]} succeeded, #{chance_list[1]} failed).
+Payout for success is **#{(1.0/chance_list[0]).round(2)}x**, for failure **#{(1.0/chance_list[1]).round(2)}x**.
+Bet using the following format: `rubot, bet 10 on failure`"
+      end
     when 'success'
     when 'failure'
     end
