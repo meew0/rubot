@@ -59,8 +59,8 @@ Now this is not 100% correct, as the command evaluates Ruby code, not Groovy, an
 end
 
 bot.message(starting_with: 'rubot, bet') do |event|
-  if /rubot, bet (?<amount>\d+) ?(💎)? on (?<state>success|failure)/ =~ event.content
-    amount = amount.to_i
+  if /rubot, bet (?<amount>\d+(\.\d+)?) ?(💎)? on (?<state>success|failure)/ =~ event.content
+    amount = amount.to_f
 
     bets_file = RubotHandlers::Status::BetsFile.instance
     if bets_file.balance_of(event.author.id) >= amount
