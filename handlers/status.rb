@@ -135,7 +135,8 @@ Chances for committer #{payload.sender_name} have been updated to #{format_chanc
     case payload.state
     when 'pending'
       if @current_bet
-        "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.sender_name}**, however another bet is already active, so betting on this won't be possible. Sorry!"
+        return "There is a pending build for commit **#{payload.commit_sha}** by **#{payload.sender_name}**, however another bet is already active, so betting on this won't be possible. Sorry!" if payload.commit_sha != @bet_sha
+        return nil
       else
         @bet_sha = payload.commit_sha
         @current_bet = []
