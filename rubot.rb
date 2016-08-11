@@ -79,6 +79,10 @@ class WSPayload
     @data['sender']['id']
   end
 
+  def commit_sha
+    @data['commit']['sha']
+  end
+
   def state
     @data['state']
   end
