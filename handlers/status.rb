@@ -38,4 +38,12 @@ module RubotHandlers::Status
       @enabled_repos.include? repo
     end
   end
+
+  def self.handle(payload)
+    case payload.state
+    when 'pending'
+    when 'success'
+    when 'failure'
+    end
+  end
 end
