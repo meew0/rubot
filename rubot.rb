@@ -104,6 +104,10 @@ class WSPayload
     @data['sender']['id']
   end
 
+  def author_name
+    @data['commit']['author']['login']
+  end
+
   def commit_sha
     @data['commit']['sha']
   end
