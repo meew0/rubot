@@ -64,7 +64,7 @@ bot.message(starting_with: 'rubot, bet') do |event|
 
     bets_file = RubotHandlers::Status::BetsFile.instance
     if bets_file.balance_of(event.author.id) > amount
-      bets_file.update_balance(event.author.id, -balance)
+      bets_file.update_balance(event.author.id, -amount)
       bets_file.write
 
       state_num = RubotHandlers::Status::STATE_NUMS[state.to_i]
