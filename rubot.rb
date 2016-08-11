@@ -79,6 +79,10 @@ class WSPayload
     @data['sender']['id']
   end
 
+  def state
+    @data['state']
+  end
+
   def issue
     @data['issue']
   end
