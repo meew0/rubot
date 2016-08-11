@@ -147,6 +147,12 @@ Chances for committer #{payload.author_name} have been updated to #{format_chanc
   end
 
   def self.handle(payload)
+    unless payload.context.end_with? 'pr'
+      # Ignore pushes
+      puts 'Ignoring a non-PR build'
+      return nil
+    end
+
     case payload.state
     when 'pending'
       if @current_bet
