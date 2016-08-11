@@ -79,6 +79,10 @@ bot.message(starting_with: 'rubot, bet') do |event|
   end
 end
 
+bot.message(with_text: 'rubot, view balance') do |event|
+  event.respond "You have **#{RubotHandlers::Status::BetsFile.instance.balance_of(event.author.id)} #{RubotHandlers::Status::GEM}**."
+end
+
 bot.run :async
 
 class WSPayload
