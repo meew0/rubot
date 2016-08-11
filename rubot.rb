@@ -83,6 +83,21 @@ bot.message(with_text: 'rubot, view balance') do |event|
   event.respond "You have **#{RubotHandlers::Status::BetsFile.instance.balance_of(event.author.id)} #{RubotHandlers::Status::GEM}**."
 end
 
+bot.message(with_text: 'rubot, view leaderboard') do |event|
+  str = "The top betting users globally:\n"
+
+  balances = RubotHandlers::Status::BetsFile.instance.balances.sort_by(&:last)
+  count = 0
+
+  until count == 5 || balances.empty?
+    balance = balances.pop
+    str += "**#{bot.user(balance.first).name}**: **#{balance.last} #{RubotHandlers::Status::GEM}**\n"
+    count += 1
+  end
+
+  event.respond(str)
+end
+
 bot.run :async
 
 class WSPayload
