@@ -120,7 +120,7 @@ Chances for committer #{payload.sender_name} have been updated to #{format_chanc
       str
     else
       puts 'Note: conclude_bet called for commit not equal to current bet. Ignoring'
-      ''
+      nil
     end
   end
 
