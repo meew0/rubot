@@ -107,6 +107,7 @@ Chances for committer #{payload.sender_name} have been updated to #{format_chanc
         str += "**#{better[1]}** has #{delta >= 0 ? 'won' : 'lost'} **#{delta.abs} #{GEM}**."
       end
 
+      @current_bet = nil
       BetsFile.write
       str
     else
