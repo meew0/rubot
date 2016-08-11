@@ -147,6 +147,12 @@ Chances for committer #{payload.author_name} have been updated to #{format_chanc
   end
 
   def self.handle(payload)
+    unless BetsFile.instance.enabled_repos.include?(payload.repo_name)
+      # Ignore repos for which betting is disabled
+      puts 'Ignoring a non-enabled repo'
+      return nil
+    end
+
     unless payload.context.end_with? 'pr'
       # Ignore pushes
       puts 'Ignoring a non-PR build'
